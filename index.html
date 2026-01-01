@@ -198,7 +198,8 @@ function videoPlay(course){
     console.log("Event: video_play |", course);
 
     gtag('event', 'video_play', {
-        course_name: course
+        course_name: course,
+        video_play_count: 1
     });
 }
 
@@ -269,7 +270,8 @@ function generatePDF(course, e) {
     console.log("Event: pdf_generated | Course:", course);
     gtag('event', 'pdf_generated', {
         course_name: course,
-        pdf_topic: course + " Notes"
+        pdf_topic: course + " Notes",
+        pdf_download_count: 1
     });
 }
 
@@ -300,6 +302,7 @@ function footerClick(){
 
 </body>
 </html>
+
 
 
 
