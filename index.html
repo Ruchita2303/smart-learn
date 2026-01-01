@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Learn Pro</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#e3f2fd,#fce4ec);
+    margin: 0;
+}
+
+header {
+    background: linear-gradient(to right,#1976d2,#d81b60);
+    padding: 25px;
+    color: white;
+    text-align: center;
+}
+
+.section-title {
+    margin: 30px;
+    font-size: 26px;
+    color: #0d47a1;
+}
+
+.container {
+    padding: 20px 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #1976d2;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0d47a1;
+}
+
+video, iframe {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+}
+
+footer {
+    background: #eeeeee;
+    padding: 12px;
+    text-align: center;
+}
+</style>
+</head>
+
+<body onclick="pageClick()">
+
+<header onclick="stopEvent(event)">
+    <h1>Smart Learn Pro</h1>
+    <p>Interactive Learning | Analytics Driven</p>
+</header>
+
+<!-- ================= SELF HOSTED COURSES ================= -->
+<h2 class="section-title">Self-Hosted Courses</h2>
+
+<div class="container">
+
+    <!-- HTML -->
+    <div class="card" onclick="selectCourse('HTML Fundamentals')">
+        <h3>HTML Fundamentals</h3>
+        <video controls onclick="stopEvent(event)"
+            onplay="videoPlay('HTML')"
+            onpause="videoPause('HTML')">
+            <source src="video-html.mp4" type="video/mp4">
+        </video>
+        <button onclick="enroll('HTML',event)">Enroll</button>
+        <button onclick="generatePDF('HTML',event)">Generate Notes (PDF)</button>
+    </div>
+
+    <!-- Python -->
+    <div class="card" onclick="selectCourse('Python Basics')">
+        <h3>Python Basics</h3>
+        <video controls onclick="stopEvent(event)"
+            onplay="videoPlay('Python')"
+            onpause="videoPause('Python')">
+            <source src="video-python.mp4" type="video/mp4">
+        </video>
+        <button onclick="enroll('Python',event)">Enroll</button>
+        <button onclick="generatePDF('Python',event)">Generate Notes (PDF)</button>
+    </div>
+
+    <!-- SQL -->
+    <div class="card" onclick="selectCourse('SQL Essentials')">
+        <h3>SQL Essentials</h3>
+        <video controls onclick="stopEvent(event)"
+            onplay="videoPlay('SQL')"
+            onpause="videoPause('SQL')">
+            <source src="video-sql.mp4" type="video/mp4">
+        </video>
+        <button onclick="enroll('SQL',event)">Enroll</button>
+        <button onclick="generatePDF('SQL',event)">Generate Notes (PDF)</button>
+    </div>
+
+</div>
+
+
+
+<!-- ================= FEEDBACK ================= -->
+<h2 class="section-title">Student Feedback</h2>
+
+<div class="container">
+    <div class="card">
+        <form onsubmit="submitFeedback(event)">
+            <input onclick="fieldClick('Name')" placeholder="Your Name" required>
+            <input onclick="fieldClick('Course')" placeholder="Course Name" required>
+            <textarea onclick="fieldClick('Feedback')" placeholder="Your Feedback" required></textarea>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+
+<footer onclick="footerClick()">
+    © 2026 Smart Learn Pro
+</footer>
+
+<script>
+/* ---------- GLOBAL ---------- */
+function pageClick(){ console.log("Event: page_click"); }
+function stopEvent(e){ e.stopPropagation(); }
+
+/* ---------- COURSE ---------- */
+function selectCourse(course){
+    console.log("Event: course_card_click |",course);
+}
+function enroll(course,e){
+    e.stopPropagation();
+    console.log("Event: enroll_click |",course);
+    alert("Enrolled in "+course);
+}
+
+/* ---------- VIDEO ---------- */
+function videoPlay(course){
+    console.log("Event: video_play |",course);
+}
+function videoPause(course){
+    console.log("Event: video_pause |",course);
+}
+
+/* ---------- PDF ---------- */
+function generatePDF(course, e) {
+    e.stopPropagation();
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    let introText = "";
+
+    if (course === "HTML") {
+        introText =
+        "HTML (HyperText Markup Language) is the standard language used to create web pages. " +
+        "It defines the structure of content on the web using elements such as headings, " +
+        "paragraphs, images, links, and forms.";
+    }
+
+    if (course === "Python") {
+        introText =
+        "Python is a high-level, interpreted programming language known for its simplicity " +
+        "and readability. It is widely used in web development, data science, automation, " +
+        "and artificial intelligence.";
+    }
+
+    if (course === "SQL") {
+        introText =
+        "SQL (Structured Query Language) is used to store, retrieve, and manipulate data " +
+        "in relational databases. It allows users to perform operations such as SELECT, " +
+        "INSERT, UPDATE, and DELETE on database tables.";
+    }
+
+    pdf.setFontSize(16);
+    pdf.text("Smart Learn Pro - Course Notes", 20, 20);
+
+    pdf.setFontSize(12);
+    pdf.text("Course: " + course, 20, 35);
+
+    pdf.setFontSize(11);
+    pdf.text("Introduction:", 20, 50);
+
+    pdf.setFontSize(10);
+    pdf.text(introText, 20, 60, { maxWidth: 170 });
+
+    pdf.text("Topics Covered:", 20, 90);
+    pdf.text("- Introduction and Basics", 30, 100);
+    pdf.text("- Core Concepts", 30, 110);
+    pdf.text("- Practical Examples", 30, 120);
+
+    pdf.text(
+        "This PDF is auto-generated from the Smart Learn Pro website for learning purposes.",
+        20,
+        140,
+        { maxWidth: 170 }
+    );
+
+    pdf.save(course + "_Notes.pdf");
+
+    console.log("Event: pdf_generated | Course:", course);}
+
+
+
+/* ---------- FORM ---------- */
+function submitFeedback(e){
+    e.preventDefault();
+    console.log("Event: feedback_submit");
+    alert("Thank you for feedback");
+}
+function fieldClick(field){
+    console.log("Event: form_field_click |",field);
+}
+
+/* ---------- FOOTER ---------- */
+function footerClick(){
+    console.log("Event: footer_click");
+}
+</script>
+
+</body>
+</html>
