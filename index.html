@@ -9,13 +9,13 @@
   gtag('js', new Date());
 
   gtag('config', 'G-NMWSMWDWE9');
-    <script>
+
+  // Set user property correctly
   gtag('set', 'user_properties', {
     user_type: 'student'
   });
 </script>
 
-</script>
 <meta charset="UTF-8">
 <title>Smart Learn Pro</title>
 
@@ -174,20 +174,40 @@ function stopEvent(e){ e.stopPropagation(); }
 
 /* ---------- COURSE ---------- */
 function selectCourse(course){
-    console.log("Event: course_card_click |",course);
+    console.log("Event: course_card_click |", course);
+
+    // GA4 event with custom dimension
+    gtag('event', 'course_click', {
+        course_name: course
+    });
 }
+
 function enroll(course,e){
     e.stopPropagation();
-    console.log("Event: enroll_click |",course);
-    alert("Enrolled in "+course);
+    console.log("Event: enroll_click |", course);
+    alert("Enrolled in " + course);
+
+    // GA4 event with custom dimension
+    gtag('event', 'enroll_click', {
+        course_name: course
+    });
 }
 
 /* ---------- VIDEO ---------- */
 function videoPlay(course){
-    console.log("Event: video_play |",course);
+    console.log("Event: video_play |", course);
+
+    gtag('event', 'video_play', {
+        course_name: course
+    });
 }
+
 function videoPause(course){
-    console.log("Event: video_pause |",course);
+    console.log("Event: video_pause |", course);
+
+    gtag('event', 'video_pause', {
+        course_name: course
+    });
 }
 
 /* ---------- PDF ---------- */
@@ -246,7 +266,12 @@ function generatePDF(course, e) {
 
     pdf.save(course + "_Notes.pdf");
 
-    console.log("Event: pdf_generated | Course:", course);}
+    console.log("Event: pdf_generated | Course:", course);
+    gtag('event', 'pdf_generated', {
+        course_name: course,
+        pdf_topic: course + " Notes"
+    });
+}
 
 
 
@@ -255,9 +280,16 @@ function submitFeedback(e){
     e.preventDefault();
     console.log("Event: feedback_submit");
     alert("Thank you for feedback");
+
+    gtag('event', 'feedback_submit', {});
 }
+
 function fieldClick(field){
-    console.log("Event: form_field_click |",field);
+    console.log("Event: form_field_click |", field);
+
+    gtag('event', 'form_field_click', {
+        form_field: field
+    });
 }
 
 /* ---------- FOOTER ---------- */
@@ -268,5 +300,6 @@ function footerClick(){
 
 </body>
 </html>
+
 
 
